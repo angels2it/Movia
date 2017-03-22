@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<views:ViewBase xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:Rangstrup.Xam.Plugin.Mvvm.Views;assembly=Rangstrup.Xam.Plugin.Mvvm"
+             x:Class="Movia.Mobile.Views.LoginPage"
+                BackgroundColor="White" Padding="20">
+  <StackLayout HorizontalOptions="FillAndExpand"
+               VerticalOptions="FillAndExpand">
+    <Image Source="icon.png" WidthRequest="60" VerticalOptions="Start"></Image>
+    <Label Text="Brugernavn"></Label>
+    <Entry Text="{Binding Username}"></Entry>
+    <BoxView HeightRequest="20"></BoxView>
+    <Label Text="Adgangskode"></Label>
+    <Entry Text="{Binding Password}"></Entry>
+    <Button VerticalOptions="End" Text="Start"
+            Command="{Binding Start}"></Button>
+  </StackLayout>
+</views:ViewBase>
