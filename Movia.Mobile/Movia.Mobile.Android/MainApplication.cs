@@ -3,16 +3,20 @@ using System;
 using Android.App;
 using Android.OS;
 using Android.Runtime;
+using Movia.Mobile.Helpers;
+using Movia.Mobile.Services;
 using Plugin.CurrentActivity;
+using Xamarin.Forms;
+using Application = Android.App.Application;
 
 namespace Movia.Mobile.Droid
 {
-	//You can specify additional application information in this attribute
+    //You can specify additional application information in this attribute
     [Application]
     public class MainApplication : Application, Application.IActivityLifecycleCallbacks
     {
         public MainApplication(IntPtr handle, JniHandleOwnership transer)
-          :base(handle, transer)
+          : base(handle, transer)
         {
         }
 
@@ -53,11 +57,15 @@ namespace Movia.Mobile.Droid
 
         public void OnActivityStarted(Activity activity)
         {
+            if (Settings.IsSendLocation)
+                DependencyService.Get<IFormsLocationService>().StopLocationService();
             CrossCurrentActivity.Current.Activity = activity;
         }
 
         public void OnActivityStopped(Activity activity)
         {
+            if (Settings.IsSendLocation)
+                DependencyService.Get<IFormsLocationService>().StartLocationService();
         }
     }
 }

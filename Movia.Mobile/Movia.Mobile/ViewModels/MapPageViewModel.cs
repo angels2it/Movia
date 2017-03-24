@@ -20,10 +20,11 @@ namespace Movia.Mobile.ViewModels
     public class MapPageViewModel : ViewModelBase<PositionModel>
     {
         readonly FirebaseClient _client;
-        private PositionModel _previousPos;
+        private PositionModel _lastUpdatedPos;
         public CameraModel Camera { get; set; }
         public MapOptionsModel Options { get; set; }
         public bool IsFixedCenter { get; set; }
+        public PositionModel MyPosition { get; set; }
 
         public MapPageViewModel(FirebaseClient client)
         {
@@ -34,8 +35,28 @@ namespace Movia.Mobile.ViewModels
         public override void Init()
         {
             base.Init();
+            IsFixedCenter = true;
             GetCurrentUserInfo().ConfigureAwait(false);
+            GetUsers().ConfigureAwait(false);
             EventSubcribers();
+        }
+
+        private async Task GetUsers()
+        {
+            try
+            {
+                var users = await _client.Child("Users")
+                 .OnceAsync<UserModel>();
+                foreach (var user in users)
+                {
+                    if (user.Key == Settings.UserId)
+                        continue;
+                    UiUpdateUserPosition(user.Object);
+                }
+            }
+            catch (Exception e)
+            {
+            }
             FirebaseSubcribers();
         }
 
@@ -46,6 +67,23 @@ namespace Movia.Mobile.ViewModels
                 var user = await _client.Child("Users")
                 .Child(Settings.UserId)
                 .OnceSingleAsync<UserModel>();
+                Options = new MapOptionsModel()
+                {
+                    MyPositionOptions = new PositionOptionsModel()
+                    {
+                        Icon = user.Icon,
+                        Text = "My location"
+                    }
+                };
+                if (MyPosition != null)
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Camera = new CameraModel()
+                        {
+                            Zoom = 16,
+                            Target = MyPosition.Position
+                        };
+                    });
             }
             catch (Exception e)
             {
@@ -59,19 +97,18 @@ namespace Movia.Mobile.ViewModels
 
         private void OnCurrentPositionChanged(CurrentPositionChangedEvent obj)
         {
-            if (obj.Position == null)
+            if (obj.Position == null || !Settings.IsSendLocation)
                 return;
-            if (_previousPos != null &&
-                MapHelpers.GetDistance(_previousPos.Lat, _previousPos.Lng, obj.Position.Lat, obj.Position.Lng) * 1000 < 10)
+            if (_lastUpdatedPos != null &&
+                MapHelpers.GetDistance(_lastUpdatedPos.Lat, _lastUpdatedPos.Lng, obj.Position.Lat, obj.Position.Lng) * 1000 < 10)
             {
-                _previousPos = obj.Position;
                 return;
             }
-            _previousPos = obj.Position;
-            NotifyMyLocationChanged(new Position(obj.Position.Lat, obj.Position.Lng)).ConfigureAwait(false);
+            _lastUpdatedPos = obj.Position;
+            NotifyMyLocationChanged(new UserPositionModel(obj.Position.Lat, obj.Position.Lng, DateTime.UtcNow)).ConfigureAwait(false);
         }
 
-        private async Task NotifyMyLocationChanged(Position position)
+        private async Task NotifyMyLocationChanged(UserPositionModel position)
         {
             await _client.Child("Users")
                 .Child(Settings.UserId)
@@ -90,6 +127,8 @@ namespace Movia.Mobile.ViewModels
         {
             try
             {
+                if (@event.Key == Settings.UserId)
+                    return;
                 Device.BeginInvokeOnMainThread(() => UiUpdateUserPosition(@event.Object));
             }
             catch (Exception e)
@@ -102,7 +141,7 @@ namespace Movia.Mobile.ViewModels
             var item = ListItems.FirstOrDefault(e => e.Index == user.Id);
             if (item == null)
             {
-                ListItems.Add(new PositionModel(user.Id, user.Position, user.Name, user.Icon));
+                ListItems.Add(new PositionModel(user.Id, user.Position.Latitude, user.Position.Longitude, user.Name, user.Icon));
                 return;
             }
             item.UpdatePosition(user.Position.Latitude, user.Position.Longitude);

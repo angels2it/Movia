@@ -10,6 +10,7 @@ using PropertyChanged;
 using Rangstrup.Xam.Plugin.Analytics;
 using Rangstrup.Xam.Plugin.Mvvm;
 using Rangstrup.Xam.Plugin.Mvvm.ViewModels;
+using Rangstrup.Xam.Plugin.Mvvm.Views;
 using Xamarin.Forms;
 
 namespace Movia.Mobile.ViewModels
@@ -21,16 +22,18 @@ namespace Movia.Mobile.ViewModels
         private readonly IUserDialogs _dialogs;
         private readonly IAccountService _accountService;
         private readonly FirebaseClient _client;
+        private readonly IViewFactory _viewFactory;
         public string Username { get; set; }
         public string Password { get; set; }
         public CommandTrackable Start { get; set; }
 
-        public LoginPageViewModel(INavigator navigator, IUserDialogs dialogs, IAccountService accountService, FirebaseClient client)
+        public LoginPageViewModel(INavigator navigator, IUserDialogs dialogs, IAccountService accountService, FirebaseClient client, IViewFactory viewFactory)
         {
             _navigator = navigator;
             _dialogs = dialogs;
             _accountService = accountService;
             _client = client;
+            _viewFactory = viewFactory;
             InitCommands();
         }
 
@@ -51,16 +54,25 @@ namespace Movia.Mobile.ViewModels
 
         private void OnStartExecute()
         {
-            LoginTask().ConfigureAwait(false);
-        }
-
-        private async Task LoginTask()
-        {
             if (UserAndPassNotValid())
             {
                 OnLoginError();
                 return;
             }
+            UiLoading();
+            LoginTask().ConfigureAwait(false);
+        }
+
+        private void UiLoading()
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                _dialogs.ShowLoading();
+            });
+        }
+
+        private async Task LoginTask()
+        {
             LoginModelResult result = await _accountService.Login(new LoginModel()
             {
                 Username = Username,
@@ -68,10 +80,19 @@ namespace Movia.Mobile.ViewModels
             });
             if (!result.Ok)
             {
+                UiHideLoading();
                 OnLoginError();
                 return;
             }
             await OnLoginSuccess(result);
+        }
+
+        private void UiHideLoading()
+        {
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                _dialogs.HideLoading();
+            });
         }
 
         private void OnLoginError()
@@ -96,6 +117,7 @@ namespace Movia.Mobile.ViewModels
                 _dialogs.Alert("Error");
                 return;
             }
+            Settings.IsAuth = true;
             Settings.UserId = user.Id;
             try
             {
@@ -112,7 +134,8 @@ namespace Movia.Mobile.ViewModels
             {
                 
             }
-            await _navigator.PushModalAsync<MapPageViewModel>();
+            UiHideLoading();
+            App.Current.OnAuthFlow(_viewFactory);
         }
 
         private bool UserAndPassNotValid()

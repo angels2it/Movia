@@ -21,14 +21,14 @@ namespace Movia.Mobile.Services
                 Id = "8367c658-40c5-317a-04b4-de0d05050505",
                 Username = "U1",
                 Password = "Pass1",
-                Icon = "icon_u1.png"
+                Icon = "icon_u1"
             },
             new UserData()
             {
                             Id = "d267c658-40c5-317a-04b4-de0f05050505",
                 Username = "U2",
                 Password = "Pass2",
-                Icon = "icon_u2.png"
+                Icon = "icon_u2"
             }
         };
         public Task<LoginModelResult> Login(LoginModel model)

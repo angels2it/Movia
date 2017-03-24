@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Acr.UserDialogs;
 using Autofac;
 using Firebase.Xamarin.Database;
+using Firebase.Xamarin.Database.Query;
 using Rangstrup.Xam.Plugin.Mvvm.Views;
 using Xamarin.Forms;
 using Movia.Mobile.Helpers;
+using Movia.Mobile.Models;
 using Movia.Mobile.Services;
 using Movia.Mobile.ViewModels;
 using Movia.Mobile.Views;
+using Rangstrup.Xam.Plugin.Maps;
 using Rangstrup.Xam.Plugin.Mvvm.Autofac;
+using Xamarin.Forms.Maps;
 
 namespace Movia.Mobile
 {
@@ -22,12 +27,10 @@ namespace Movia.Mobile
             InitializeComponent();
             new Bootstrapper(this).Run();
         }
-#if DEBUG
-        public bool IsAuth => false;
-#else
-        public bool IsAuth => Settings.IsAuth;
-#endif
+        public new static App Current => (App)Application.Current;
 
+        public bool IsAuth => Settings.IsAuth;
+        private FirebaseClient _client;
         public override void ConfigApplication(IContainer container)
         {
 
@@ -40,8 +43,12 @@ namespace Movia.Mobile
 
         public override void RegisterServices(ContainerBuilder builder)
         {
+            var fl = DependencyService.Get<IFormsLocationService>();
+            builder.RegisterInstance(fl);
             builder.RegisterType<AccountService>().AsImplementedInterfaces();
-            builder.RegisterInstance(new FirebaseClient(Settings.FirebaseUrl)).SingleInstance();
+
+            _client = new FirebaseClient(Settings.FirebaseUrl);
+            builder.RegisterInstance(_client).SingleInstance();
             builder.RegisterInstance(UserDialogs.Instance);
         }
 
@@ -64,9 +71,11 @@ namespace Movia.Mobile
             MainPage = viewFactory.Resolve<LoginPageViewModel>();
         }
 
-        private void OnAuthFlow(IViewFactory viewFactory)
+        public void OnAuthFlow(IViewFactory viewFactory)
         {
             MainPage = viewFactory.Resolve<MapPageViewModel>();
+            //if (Settings.IsSendLocation)
+            //    DependencyService.Get<IFormsLocationService>().StartLocationService();
         }
     }
 }

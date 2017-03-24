@@ -44,6 +44,7 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\UserData.cs" />
     <Compile Include="Models\LoginModelResult.cs" />
+    <Compile Include="Services\IFormsLocationService.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

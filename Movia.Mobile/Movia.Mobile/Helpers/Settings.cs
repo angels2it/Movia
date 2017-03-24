@@ -16,6 +16,7 @@ namespace Movia.Mobile.Helpers
 
         private const string IsAuthKey = "isAuth_key";
         private const string UserIdKey = "userId_key";
+        private const string IsSendLocationKey = "isSendLocation_key";
 
         #endregion
 
@@ -42,6 +43,18 @@ namespace Movia.Mobile.Helpers
             set
             {
                 AppSettings.AddOrUpdateValue(UserIdKey, value);
+            }
+        }
+
+        public static bool IsSendLocation
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(IsSendLocationKey, true);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(IsSendLocationKey, value);
             }
         }
     }

@@ -5,13 +5,26 @@
              xmlns:views="clr-namespace:Rangstrup.Xam.Plugin.Mvvm.Views;assembly=Rangstrup.Xam.Plugin.Mvvm"
              x:Class="Movia.Mobile.Views.MapPage"
              Title="MapPage">
-    <AbsoluteLayout HorizontalOptions="FillAndExpand"
+    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <AbsoluteLayout HorizontalOptions="FillAndExpand"
                   VerticalOptions="FillAndExpand">
-        <maps:MapControl AbsoluteLayout.LayoutFlags="All"
+            <maps:MapControl AbsoluteLayout.LayoutFlags="All"
                      AbsoluteLayout.LayoutBounds="0,0,1,1"
                      Camera="{Binding Camera}"
                      Options="{Binding Options}"
                      IsFixedCenter="{Binding IsFixedCenter}"
-                     Positions="{Binding ListItems}"></maps:MapControl>
-    </AbsoluteLayout>
+                     Positions="{Binding ListItems}"
+                         MyPosition="{Binding MyPosition}"></maps:MapControl>
+        </AbsoluteLayout>
+
+        <StackLayout
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="End"
+            BackgroundColor="White"
+            Spacing="10"
+            HeightRequest="30" Orientation="Horizontal" Padding="10">
+            <Label VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" Text="Send position to server"></Label>
+            <Switch x:Name="Switch" Toggled="Switch_OnToggled"></Switch>
+        </StackLayout>
+    </StackLayout>
 </views:ViewBase>
