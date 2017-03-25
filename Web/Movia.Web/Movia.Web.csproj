@@ -1,0 +1,611 @@
+﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8E079FAC-E2E6-404B-865A-802B16E6FFA6}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Movia.Web</RootNamespace>
+    <AssemblyName>Movia.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\app.css" />
+    <Content Include="app\app.js" />
+    <Content Include="app\assets\icon_u1.png" />
+    <Content Include="app\assets\icon_u2.png" />
+    <Content Include="app\components\version\interpolate-filter.js" />
+    <Content Include="app\components\version\interpolate-filter_test.js" />
+    <Content Include="app\components\version\version-directive.js" />
+    <Content Include="app\components\version\version-directive_test.js" />
+    <Content Include="app\components\version\version.js" />
+    <Content Include="app\components\version\version_test.js" />
+    <Content Include="app\index-async.html" />
+    <Content Include="app\view1\view1.html" />
+    <Content Include="app\view1\view1.js" />
+    <Content Include="app\view1\view1_test.js" />
+    <Content Include="app\view2\view2.html" />
+    <Content Include="app\view2\view2.js" />
+    <Content Include="app\view2\view2_test.js" />
+    <Content Include="bower_components\angular-loader\angular-loader.js" />
+    <Content Include="bower_components\angular-loader\angular-loader.min.js" />
+    <Content Include="bower_components\angular-mocks\angular-mocks.js" />
+    <Content Include="bower_components\angular-mocks\ngAnimateMock.js" />
+    <Content Include="bower_components\angular-mocks\ngMock.js" />
+    <Content Include="bower_components\angular-mocks\ngMockE2E.js" />
+    <Content Include="bower_components\angular-route\angular-route.js" />
+    <Content Include="bower_components\angular-route\angular-route.min.js" />
+    <Content Include="bower_components\angular-route\index.js" />
+    <Content Include="bower_components\angular\angular-csp.css" />
+    <Content Include="bower_components\angular\angular.js" />
+    <Content Include="bower_components\angular\angular.min.js" />
+    <Content Include="bower_components\angular\index.js" />
+    <Content Include="bower_components\html5-boilerplate\.gitattributes" />
+    <Content Include="bower_components\html5-boilerplate\.gitignore" />
+    <Content Include="bower_components\html5-boilerplate\dist\.gitattributes" />
+    <Content Include="bower_components\html5-boilerplate\dist\.gitignore" />
+    <Content Include="bower_components\html5-boilerplate\dist\404.html" />
+    <Content Include="bower_components\html5-boilerplate\dist\apple-touch-icon.png" />
+    <Content Include="bower_components\html5-boilerplate\dist\browserconfig.xml" />
+    <Content Include="bower_components\html5-boilerplate\dist\crossdomain.xml" />
+    <Content Include="bower_components\html5-boilerplate\dist\css\main.css" />
+    <Content Include="bower_components\html5-boilerplate\dist\css\normalize.css" />
+    <Content Include="bower_components\html5-boilerplate\dist\favicon.ico" />
+    <Content Include="bower_components\html5-boilerplate\dist\humans.txt" />
+    <Content Include="bower_components\html5-boilerplate\dist\img\.gitignore" />
+    <Content Include="bower_components\html5-boilerplate\dist\index.html" />
+    <Content Include="bower_components\html5-boilerplate\dist\js\main.js" />
+    <Content Include="bower_components\html5-boilerplate\dist\js\plugins.js" />
+    <Content Include="bower_components\html5-boilerplate\dist\js\vendor\jquery-1.12.0.min.js" />
+    <Content Include="bower_components\html5-boilerplate\dist\js\vendor\modernizr-2.8.3.min.js" />
+    <Content Include="bower_components\html5-boilerplate\dist\LICENSE.txt" />
+    <Content Include="bower_components\html5-boilerplate\dist\robots.txt" />
+    <Content Include="bower_components\html5-boilerplate\dist\tile-wide.png" />
+    <Content Include="bower_components\html5-boilerplate\dist\tile.png" />
+    <Content Include="bower_components\html5-boilerplate\gulpfile.js" />
+    <Content Include="bower_components\html5-boilerplate\LICENSE.txt" />
+    <Content Include="bower_components\html5-boilerplate\src\.gitattributes" />
+    <Content Include="bower_components\html5-boilerplate\src\.gitignore" />
+    <Content Include="bower_components\html5-boilerplate\src\404.html" />
+    <Content Include="bower_components\html5-boilerplate\src\apple-touch-icon.png" />
+    <Content Include="bower_components\html5-boilerplate\src\browserconfig.xml" />
+    <Content Include="bower_components\html5-boilerplate\src\crossdomain.xml" />
+    <Content Include="bower_components\html5-boilerplate\src\css\main.css" />
+    <Content Include="bower_components\html5-boilerplate\src\favicon.ico" />
+    <Content Include="bower_components\html5-boilerplate\src\humans.txt" />
+    <Content Include="bower_components\html5-boilerplate\src\img\.gitignore" />
+    <Content Include="bower_components\html5-boilerplate\src\index.html" />
+    <Content Include="bower_components\html5-boilerplate\src\js\main.js" />
+    <Content Include="bower_components\html5-boilerplate\src\js\plugins.js" />
+    <Content Include="bower_components\html5-boilerplate\src\js\vendor\modernizr-2.8.3.min.js" />
+    <Content Include="bower_components\html5-boilerplate\src\robots.txt" />
+    <Content Include="bower_components\html5-boilerplate\src\tile-wide.png" />
+    <Content Include="bower_components\html5-boilerplate\src\tile.png" />
+    <Content Include="bower_components\html5-boilerplate\test\file_content.js" />
+    <Content Include="bower_components\html5-boilerplate\test\file_existence.js" />
+    <Content Include="bower_components\ngmap\.gitattributes" />
+    <Content Include="bower_components\ngmap\.gitignore" />
+    <Content Include="bower_components\ngmap\app.js" />
+    <Content Include="bower_components\ngmap\build\docs\Attr2MapOptions.html" />
+    <Content Include="bower_components\ngmap\build\docs\bicycling-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\css\prettify-tomorrow.css" />
+    <Content Include="bower_components\ngmap\build\docs\css\prettify.css" />
+    <Content Include="bower_components\ngmap\build\docs\css\site.css" />
+    <Content Include="bower_components\ngmap\build\docs\custom-control.html" />
+    <Content Include="bower_components\ngmap\build\docs\directions.html" />
+    <Content Include="bower_components\ngmap\build\docs\drawing-manager.html" />
+    <Content Include="bower_components\ngmap\build\docs\dynamic-maps-engine-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\fusion-tables-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\GeoCoder.html" />
+    <Content Include="bower_components\ngmap\build\docs\GoogleMapsApi.html" />
+    <Content Include="bower_components\ngmap\build\docs\heatmap-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\index.html" />
+    <Content Include="bower_components\ngmap\build\docs\info-window.html" />
+    <Content Include="bower_components\ngmap\build\docs\js\angular.min.js" />
+    <Content Include="bower_components\ngmap\build\docs\js\prettify.js" />
+    <Content Include="bower_components\ngmap\build\docs\js\site.js" />
+    <Content Include="bower_components\ngmap\build\docs\kml-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\map-data.html" />
+    <Content Include="bower_components\ngmap\build\docs\map-lazy-load.html" />
+    <Content Include="bower_components\ngmap\build\docs\map-type.html" />
+    <Content Include="bower_components\ngmap\build\docs\maps-engine-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\marker.html" />
+    <Content Include="bower_components\ngmap\build\docs\NavigatorGeolocation.html" />
+    <Content Include="bower_components\ngmap\build\docs\ngmap.custom-marker.html" />
+    <Content Include="bower_components\ngmap\build\docs\NgMap.html" />
+    <Content Include="bower_components\ngmap\build\docs\ngMap.ng-map.html" />
+    <Content Include="bower_components\ngmap\build\docs\NgMapPool.html" />
+    <Content Include="bower_components\ngmap\build\docs\overlay-map-type.html" />
+    <Content Include="bower_components\ngmap\build\docs\places-auto-complete.html" />
+    <Content Include="bower_components\ngmap\build\docs\shape.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\Attr2MapOptions.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\bicycling-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\custom-control.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\directions.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\drawing-manager.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\dynamic-maps-engine-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\fusion-tables-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\GeoCoder.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\GoogleMapsApi.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\heatmap-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\info-window.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\kml-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\map-data.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\map-lazy-load.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\map-type.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\maps-engine-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\marker.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\NavigatorGeolocation.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\ngmap.custom-marker.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\NgMap.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\ngMap.ng-map.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\NgMapPool.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\overlay-map-type.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\places-auto-complete.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\shape.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\streetview-panorama.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\StreetView.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\traffic-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\source\transit-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\streetview-panorama.html" />
+    <Content Include="bower_components\ngmap\build\docs\StreetView.html" />
+    <Content Include="bower_components\ngmap\build\docs\traffic-layer.html" />
+    <Content Include="bower_components\ngmap\build\docs\transit-layer.html" />
+    <Content Include="bower_components\ngmap\build\scripts\ng-map.debug.js" />
+    <Content Include="bower_components\ngmap\build\scripts\ng-map.js" />
+    <Content Include="bower_components\ngmap\build\scripts\ng-map.min.js" />
+    <Content Include="bower_components\ngmap\build\scripts\ng-map.no-dependency.js" />
+    <Content Include="bower_components\ngmap\config\jsdoc\plugins\angular.js" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\publish.js" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\static\scripts\linenumber.js" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\static\scripts\prettify\Apache-License-2.0.txt" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\static\scripts\prettify\lang-css.js" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\static\scripts\prettify\prettify.js" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\static\styles\jsdoc-default.css" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\static\styles\prettify-jsdoc.css" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\static\styles\prettify-tomorrow.css" />
+    <Content Include="bower_components\ngmap\config\karma.conf.js" />
+    <Content Include="bower_components\ngmap\config\protractor.conf.js" />
+    <Content Include="bower_components\ngmap\contributors.js" />
+    <Content Include="bower_components\ngmap\controllers\map-controller.js" />
+    <Content Include="bower_components\ngmap\directives\bicycling-layer.js" />
+    <Content Include="bower_components\ngmap\directives\custom-control.js" />
+    <Content Include="bower_components\ngmap\directives\custom-marker.js" />
+    <Content Include="bower_components\ngmap\directives\directions.js" />
+    <Content Include="bower_components\ngmap\directives\drawing-manager.js" />
+    <Content Include="bower_components\ngmap\directives\dynamic-maps-engine-layer.js" />
+    <Content Include="bower_components\ngmap\directives\fusion-tables-layer.js" />
+    <Content Include="bower_components\ngmap\directives\heatmap-layer.js" />
+    <Content Include="bower_components\ngmap\directives\info-window.js" />
+    <Content Include="bower_components\ngmap\directives\kml-layer.js" />
+    <Content Include="bower_components\ngmap\directives\map-data.js" />
+    <Content Include="bower_components\ngmap\directives\map-lazy-load.js" />
+    <Content Include="bower_components\ngmap\directives\map-type.js" />
+    <Content Include="bower_components\ngmap\directives\map.js" />
+    <Content Include="bower_components\ngmap\directives\maps-engine-layer.js" />
+    <Content Include="bower_components\ngmap\directives\marker.js" />
+    <Content Include="bower_components\ngmap\directives\overlay-map-type.js" />
+    <Content Include="bower_components\ngmap\directives\places-auto-complete.js" />
+    <Content Include="bower_components\ngmap\directives\shape.js" />
+    <Content Include="bower_components\ngmap\directives\street-view-panorama.js" />
+    <Content Include="bower_components\ngmap\directives\traffic-layer.js" />
+    <Content Include="bower_components\ngmap\directives\transit-layer.js" />
+    <Content Include="bower_components\ngmap\favicon.ico" />
+    <Content Include="bower_components\ngmap\filters\camel-case.js" />
+    <Content Include="bower_components\ngmap\filters\escape-regexp.js" />
+    <Content Include="bower_components\ngmap\filters\jsonize.js" />
+    <Content Include="bower_components\ngmap\gulpfile.js" />
+    <Content Include="bower_components\ngmap\package.js" />
+    <Content Include="bower_components\ngmap\services\attr2-map-options.js" />
+    <Content Include="bower_components\ngmap\services\geo-coder.js" />
+    <Content Include="bower_components\ngmap\services\google-maps-api.js" />
+    <Content Include="bower_components\ngmap\services\navigator-geolocation.js" />
+    <Content Include="bower_components\ngmap\services\ng-map-pool.js" />
+    <Content Include="bower_components\ngmap\services\ng-map.js" />
+    <Content Include="bower_components\ngmap\services\street-view.js" />
+    <Content Include="bower_components\ngmap\spec\directives\map_controller_spec_back.js" />
+    <Content Include="bower_components\ngmap\spec\directives\map_spec_bak.js" />
+    <Content Include="bower_components\ngmap\spec\directives\marker_spec_bak.js" />
+    <Content Include="bower_components\ngmap\spec\directives\shape_spec_bak.js" />
+    <Content Include="bower_components\ngmap\spec\directives\street_view_panorama_spec_bak.js" />
+    <Content Include="bower_components\ngmap\spec\e2e\testapp_spec.js" />
+    <Content Include="bower_components\ngmap\spec\lib\angular-mocks.js" />
+    <Content Include="bower_components\ngmap\spec\lib\angular.js" />
+    <Content Include="bower_components\ngmap\spec\lib\markerclusterer.js" />
+    <Content Include="bower_components\ngmap\spec\services\attr2_options_spec.js" />
+    <Content Include="bower_components\ngmap\spec\services\geo_coder_spec.js" />
+    <Content Include="bower_components\ngmap\spec\services\navigator_geolocation_spec.js" />
+    <Content Include="bower_components\ngmap\spec\services\ng-map-pool-spec.js" />
+    <Content Include="bower_components\ngmap\spec\services\street_view_spec.js" />
+    <Content Include="bower_components\ngmap\testapp\aerial-rotate.html" />
+    <Content Include="bower_components\ngmap\testapp\aerial-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\all-examples.html" />
+    <Content Include="bower_components\ngmap\testapp\circle-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\control-custom-state.html" />
+    <Content Include="bower_components\ngmap\testapp\control-custom.html" />
+    <Content Include="bower_components\ngmap\testapp\control-disableUI.html" />
+    <Content Include="bower_components\ngmap\testapp\control-options.html" />
+    <Content Include="bower_components\ngmap\testapp\control-positioning.html" />
+    <Content Include="bower_components\ngmap\testapp\control-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\custom-control.html" />
+    <Content Include="bower_components\ngmap\testapp\custom-marker-2.html" />
+    <Content Include="bower_components\ngmap\testapp\custom-marker-clusterer.html" />
+    <Content Include="bower_components\ngmap\testapp\custom-marker-custom-style.html" />
+    <Content Include="bower_components\ngmap\testapp\custom-marker-ng-repeat.html" />
+    <Content Include="bower_components\ngmap\testapp\custom-marker-two-way-binding.html" />
+    <Content Include="bower_components\ngmap\testapp\custom-marker.css" />
+    <Content Include="bower_components\ngmap\testapp\custom-marker.html" />
+    <Content Include="bower_components\ngmap\testapp\directions-with-current-location.html" />
+    <Content Include="bower_components\ngmap\testapp\directions-with-custom-marker.html" />
+    <Content Include="bower_components\ngmap\testapp\directions-with-ng-repeat-panels.html" />
+    <Content Include="bower_components\ngmap\testapp\directions.html" />
+    <Content Include="bower_components\ngmap\testapp\directions2.html" />
+    <Content Include="bower_components\ngmap\testapp\drawing-manager.html" />
+    <Content Include="bower_components\ngmap\testapp\event-arguments.html" />
+    <Content Include="bower_components\ngmap\testapp\event-domlistener.html" />
+    <Content Include="bower_components\ngmap\testapp\event-properties.html" />
+    <Content Include="bower_components\ngmap\testapp\event-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\events.html" />
+    <Content Include="bower_components\ngmap\testapp\geojson.html" />
+    <Content Include="bower_components\ngmap\testapp\groundoverlay-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\gulpfile.js" />
+    <Content Include="bower_components\ngmap\testapp\icon-complex.html" />
+    <Content Include="bower_components\ngmap\testapp\icon-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\images\beachflag.png" />
+    <Content Include="bower_components\ngmap\testapp\images\spinner.gif" />
+    <Content Include="bower_components\ngmap\testapp\infowindow-simple-max.html" />
+    <Content Include="bower_components\ngmap\testapp\infowindow-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\infowindow-template.html" />
+    <Content Include="bower_components\ngmap\testapp\infowindow_compile.html" />
+    <Content Include="bower_components\ngmap\testapp\infowindow_geolookup.html" />
+    <Content Include="bower_components\ngmap\testapp\infowindow_ng_click.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-bicycling.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-data-dynamic.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-data-quakes-advanced.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-data-quakes-default.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-data-quakes-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-data-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-data-style.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-dynamicmapsengine.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-fusiontables-heatmap.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-fusiontables-query.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-fusiontables-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-fusiontables-styling.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-georss.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-heatmap.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-kml-features.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-kml.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-mapsengine.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-style-event.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-traffic.html" />
+    <Content Include="bower_components\ngmap\testapp\layer-transit.html" />
+    <Content Include="bower_components\ngmap\testapp\lib\angular-ui-router.js" />
+    <Content Include="bower_components\ngmap\testapp\lib\angular.js" />
+    <Content Include="bower_components\ngmap\testapp\lib\angular.min.js" />
+    <Content Include="bower_components\ngmap\testapp\lib\bootstrap.min.css" />
+    <Content Include="bower_components\ngmap\testapp\lib\prettify-tomorrow-night.css" />
+    <Content Include="bower_components\ngmap\testapp\lib\prettify-tomorrow.css" />
+    <Content Include="bower_components\ngmap\testapp\lib\prettify.js" />
+    <Content Include="bower_components\ngmap\testapp\map-coordinates.html" />
+    <Content Include="bower_components\ngmap\testapp\map-geolocation.html" />
+    <Content Include="bower_components\ngmap\testapp\map-gulp-usemin.html" />
+    <Content Include="bower_components\ngmap\testapp\map-gulp-usemin\map-gulp-usemin.html" />
+    <Content Include="bower_components\ngmap\testapp\map-gulp-usemin\myapp.min.js" />
+    <Content Include="bower_components\ngmap\testapp\map-initialized-callback.html" />
+    <Content Include="bower_components\ngmap\testapp\map-initialized.html" />
+    <Content Include="bower_components\ngmap\testapp\map-lazy-inint.html" />
+    <Content Include="bower_components\ngmap\testapp\map-lazy-load-params.html" />
+    <Content Include="bower_components\ngmap\testapp\map-projection-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\map-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\map-with-dynamic-id.html" />
+    <Content Include="bower_components\ngmap\testapp\mapsenginelayer-noauth-layerid.html" />
+    <Content Include="bower_components\ngmap\testapp\mapsenginelayer-noauth-layerkey.html" />
+    <Content Include="bower_components\ngmap\testapp\maptype-base.html" />
+    <Content Include="bower_components\ngmap\testapp\maptype-image-overlay.html" />
+    <Content Include="bower_components\ngmap\testapp\maptype-image.html" />
+    <Content Include="bower_components\ngmap\testapp\maptype-overlay.html" />
+    <Content Include="bower_components\ngmap\testapp\maptype-styled-complex.html" />
+    <Content Include="bower_components\ngmap\testapp\maptype-styled-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\map_app.html" />
+    <Content Include="bower_components\ngmap\testapp\map_control.html" />
+    <Content Include="bower_components\ngmap\testapp\map_events.html" />
+    <Content Include="bower_components\ngmap\testapp\map_fit_bounds.html" />
+    <Content Include="bower_components\ngmap\testapp\map_geo_fallback_center.html" />
+    <Content Include="bower_components\ngmap\testapp\map_no_default_style.html" />
+    <Content Include="bower_components\ngmap\testapp\map_options.html" />
+    <Content Include="bower_components\ngmap\testapp\map_with_address.html" />
+    <Content Include="bower_components\ngmap\testapp\map_with_current_position.html" />
+    <Content Include="bower_components\ngmap\testapp\map_with_dynamic_address.html" />
+    <Content Include="bower_components\ngmap\testapp\map_with_dynamic_center.html" />
+    <Content Include="bower_components\ngmap\testapp\map_zoom_to_include_markers.html" />
+    <Content Include="bower_components\ngmap\testapp\marker-animations-iteration.html" />
+    <Content Include="bower_components\ngmap\testapp\marker-animations.html" />
+    <Content Include="bower_components\ngmap\testapp\marker-clusterer.html" />
+    <Content Include="bower_components\ngmap\testapp\marker-remove.html" />
+    <Content Include="bower_components\ngmap\testapp\marker-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\marker-symbol-custom.html" />
+    <Content Include="bower_components\ngmap\testapp\marker-symbol-predefined.html" />
+    <Content Include="bower_components\ngmap\testapp\marker-with-default-options.html" />
+    <Content Include="bower_components\ngmap\testapp\marker.html" />
+    <Content Include="bower_components\ngmap\testapp\marker_data_with_ng_repeat.html" />
+    <Content Include="bower_components\ngmap\testapp\marker_dynamic_ng_repeat.html" />
+    <Content Include="bower_components\ngmap\testapp\marker_icon.html" />
+    <Content Include="bower_components\ngmap\testapp\marker_on_street_view.html" />
+    <Content Include="bower_components\ngmap\testapp\marker_with_address.html" />
+    <Content Include="bower_components\ngmap\testapp\marker_with_current_position.html" />
+    <Content Include="bower_components\ngmap\testapp\marker_with_dynamic_address.html" />
+    <Content Include="bower_components\ngmap\testapp\marker_with_ng_repeat_dynamic.html" />
+    <Content Include="bower_components\ngmap\testapp\marker_with_ng_repeat_no_watcher.html" />
+    <Content Include="bower_components\ngmap\testapp\marker_with_parent_controller.html" />
+    <Content Include="bower_components\ngmap\testapp\multiple_maps_on_a_page.html" />
+    <Content Include="bower_components\ngmap\testapp\overlay-custom.html" />
+    <Content Include="bower_components\ngmap\testapp\overlay-hideshow.html" />
+    <Content Include="bower_components\ngmap\testapp\overlay-remove.html" />
+    <Content Include="bower_components\ngmap\testapp\overlay-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\overlay-symbol-animate.html" />
+    <Content Include="bower_components\ngmap\testapp\overlay-symbol-arrow.html" />
+    <Content Include="bower_components\ngmap\testapp\overlay-symbol-custom.html" />
+    <Content Include="bower_components\ngmap\testapp\overlay-symbol-dashed.html" />
+    <Content Include="bower_components\ngmap\testapp\partials\custom-info-window-template.html" />
+    <Content Include="bower_components\ngmap\testapp\places-auto-complete.html" />
+    <Content Include="bower_components\ngmap\testapp\polygon-arrays.html" />
+    <Content Include="bower_components\ngmap\testapp\polygon-autoclose.html" />
+    <Content Include="bower_components\ngmap\testapp\polygon-draggable.html" />
+    <Content Include="bower_components\ngmap\testapp\polygon-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\polyline-complex.html" />
+    <Content Include="bower_components\ngmap\testapp\polyline-remove.html" />
+    <Content Include="bower_components\ngmap\testapp\polyline-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\rectangle-event.html" />
+    <Content Include="bower_components\ngmap\testapp\rectangle-simple.html" />
+    <Content Include="bower_components\ngmap\testapp\rectangle-zoom.html" />
+    <Content Include="bower_components\ngmap\testapp\script-tags-for-development.js" />
+    <Content Include="bower_components\ngmap\testapp\scripts\get-starbucks.js" />
+    <Content Include="bower_components\ngmap\testapp\scripts\markerclusterer.js" />
+    <Content Include="bower_components\ngmap\testapp\scripts\markerclusterer_packed.js" />
+    <Content Include="bower_components\ngmap\testapp\scripts\markers.js" />
+    <Content Include="bower_components\ngmap\testapp\shape.html" />
+    <Content Include="bower_components\ngmap\testapp\shape_circle_with_current_position.html" />
+    <Content Include="bower_components\ngmap\testapp\shape_circle_with_dynamic_address.html" />
+    <Content Include="bower_components\ngmap\testapp\shape_with_ng_repeat.html" />
+    <Content Include="bower_components\ngmap\testapp\street-view-panorama.html" />
+    <Content Include="bower_components\ngmap\testapp\street-view-panorama_container.html" />
+    <Content Include="bower_components\ngmap\testapp\street-view-panorama_container2.html" />
+    <Content Include="bower_components\ngmap\testapp\street-view_road_trip.html" />
+    <Content Include="bower_components\ngmap\testapp\taxi-data.js" />
+    <Content Include="bower_components\ngmap\testapp\ui-bootstrap.html" />
+    <Content Include="bower_components\ngmap\testapp\ui-router.html" />
+    <Content Include="bower_components\ngmap\testapp\ui-router2.html" />
+    <Content Include="bower_components\ngmap\testapp\user-editable-shapes.html" />
+    <Content Include="bower_components\ngmap\testapp\USGSOverlay.js" />
+    <Content Include="Global.asax" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config" />
+    <Content Include="packages.config" />
+    <Content Include="package.json" />
+    <Content Include="bower.json" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="bower_components\angular-loader\.bower.json" />
+    <Content Include="bower_components\angular-loader\angular-loader.min.js.map" />
+    <Content Include="bower_components\angular-loader\bower.json" />
+    <Content Include="bower_components\angular-loader\LICENSE.md" />
+    <Content Include="bower_components\angular-loader\package.json" />
+    <Content Include="bower_components\angular-loader\README.md" />
+    <Content Include="bower_components\angular-mocks\.bower.json" />
+    <Content Include="bower_components\angular-mocks\bower.json" />
+    <Content Include="bower_components\angular-mocks\LICENSE.md" />
+    <Content Include="bower_components\angular-mocks\package.json" />
+    <Content Include="bower_components\angular-mocks\README.md" />
+    <Content Include="bower_components\angular-route\.bower.json" />
+    <Content Include="bower_components\angular-route\angular-route.min.js.map" />
+    <Content Include="bower_components\angular-route\bower.json" />
+    <Content Include="bower_components\angular-route\LICENSE.md" />
+    <Content Include="bower_components\angular-route\package.json" />
+    <Content Include="bower_components\angular-route\README.md" />
+    <Content Include="bower_components\angular\.bower.json" />
+    <Content Include="bower_components\angular\angular.min.js.gzip" />
+    <Content Include="bower_components\angular\angular.min.js.map" />
+    <Content Include="bower_components\angular\bower.json" />
+    <Content Include="bower_components\angular\LICENSE.md" />
+    <Content Include="bower_components\angular\package.json" />
+    <Content Include="bower_components\angular\README.md" />
+    <Content Include="bower_components\html5-boilerplate\.bower.json" />
+    <Content Include="bower_components\html5-boilerplate\.editorconfig" />
+    <Content Include="bower_components\html5-boilerplate\.jscsrc" />
+    <Content Include="bower_components\html5-boilerplate\.jshintrc" />
+    <Content Include="bower_components\html5-boilerplate\.travis.yml" />
+    <Content Include="bower_components\html5-boilerplate\CHANGELOG.md" />
+    <Content Include="bower_components\html5-boilerplate\CONTRIBUTING.md" />
+    <Content Include="bower_components\html5-boilerplate\dist\.editorconfig" />
+    <Content Include="bower_components\html5-boilerplate\dist\.htaccess" />
+    <Content Include="bower_components\html5-boilerplate\dist\doc\css.md" />
+    <Content Include="bower_components\html5-boilerplate\dist\doc\extend.md" />
+    <Content Include="bower_components\html5-boilerplate\dist\doc\faq.md" />
+    <Content Include="bower_components\html5-boilerplate\dist\doc\html.md" />
+    <Content Include="bower_components\html5-boilerplate\dist\doc\js.md" />
+    <Content Include="bower_components\html5-boilerplate\dist\doc\misc.md" />
+    <Content Include="bower_components\html5-boilerplate\dist\doc\TOC.md" />
+    <Content Include="bower_components\html5-boilerplate\dist\doc\usage.md" />
+    <Content Include="bower_components\html5-boilerplate\package.json" />
+    <Content Include="bower_components\html5-boilerplate\README.md" />
+    <Content Include="bower_components\html5-boilerplate\src\.editorconfig" />
+    <Content Include="bower_components\html5-boilerplate\src\doc\css.md" />
+    <Content Include="bower_components\html5-boilerplate\src\doc\extend.md" />
+    <Content Include="bower_components\html5-boilerplate\src\doc\faq.md" />
+    <Content Include="bower_components\html5-boilerplate\src\doc\html.md" />
+    <Content Include="bower_components\html5-boilerplate\src\doc\js.md" />
+    <Content Include="bower_components\html5-boilerplate\src\doc\misc.md" />
+    <Content Include="bower_components\html5-boilerplate\src\doc\TOC.md" />
+    <Content Include="bower_components\html5-boilerplate\src\doc\usage.md" />
+    <Content Include="bower_components\ngmap\.bower.json" />
+    <Content Include="bower_components\ngmap\.travis.yml" />
+    <Content Include="bower_components\ngmap\bower.json" />
+    <Content Include="bower_components\ngmap\CHANGELOG.md" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\README.md" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\container.tmpl" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\details.tmpl" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\example.tmpl" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\examples.tmpl" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\exceptions.tmpl" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\layout.tmpl" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\mainpage.tmpl" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\members.tmpl" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\method.tmpl" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\params.tmpl" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\properties.tmpl" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\returns.tmpl" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\source.tmpl" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\tutorial.tmpl" />
+    <Content Include="bower_components\ngmap\config\jsdoc\template\tmpl\type.tmpl" />
+    <Content Include="bower_components\ngmap\CONTRIBUTORS.md" />
+    <Content Include="bower_components\ngmap\ISSUE_TEMPLATE.md" />
+    <Content Include="bower_components\ngmap\LICENSE" />
+    <Content Include="bower_components\ngmap\package.json" />
+    <Content Include="bower_components\ngmap\README.md" />
+    <Content Include="bower_components\ngmap\road-trip.md" />
+    <Content Include="bower_components\ngmap\spec\TODO" />
+    <Content Include="bower_components\ngmap\testapp\all-examples.json" />
+    <Content Include="bower_components\ngmap\testapp\heatmap.json" />
+    <Content Include="bower_components\ngmap\testapp\scripts\quakes.geo.json" />
+    <Content Include="bower_components\ngmap\testapp\scripts\starbucks.json" />
+    <Content Include="bower_components\ngmap\testapp\us-states-20m.json" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2215</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:2215/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
