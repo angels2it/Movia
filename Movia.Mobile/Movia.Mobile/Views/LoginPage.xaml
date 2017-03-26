@@ -6,7 +6,8 @@
                 BackgroundColor="White" Padding="20">
   <StackLayout HorizontalOptions="FillAndExpand"
                VerticalOptions="FillAndExpand">
-    <Image Source="icon.png" WidthRequest="60" VerticalOptions="Start"></Image>
+    <Image Source="movialogo.png" HeightRequest="60" VerticalOptions="Start" Margin="10"></Image>
+    <BoxView HeightRequest="20"></BoxView>
     <Label Text="Brugernavn"></Label>
     <Entry Text="{Binding Username}"></Entry>
     <BoxView HeightRequest="20"></BoxView>

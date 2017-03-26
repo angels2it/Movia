@@ -15,7 +15,7 @@ namespace Movia.Mobile.Helpers
         #region Setting Constants
 
         private const string IsAuthKey = "isAuth_key";
-        private const string UserIdKey = "userId_key";
+        public const string UserIdKey = "userId_key";
         private const string IsSendLocationKey = "isSendLocation_key";
 
         #endregion

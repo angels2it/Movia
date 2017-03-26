@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Android.Content;
 using Android.Util;
 using Movia.Mobile.Droid.Services;
-using Movia.Mobile.Helpers;
 using Movia.Mobile.Services;
 
 [assembly: Xamarin.Forms.Dependency(typeof(FormsLocationService))]
@@ -31,7 +30,7 @@ namespace Movia.Mobile.Droid.Services
             locationServiceConnection = new LocationServiceConnection(null);
 
             // this event will fire when the Service connectin in the OnServiceConnected call 
-            locationServiceConnection.ServiceConnected += (object sender, ServiceConnectedEventArgs e) =>
+            locationServiceConnection.ServiceConnected += (sender, e) =>
             {
 
                 Log.Debug(logTag, "Service Connected");
@@ -41,7 +40,6 @@ namespace Movia.Mobile.Droid.Services
         }
         public void StartLocationService()
         {
-            LocationService.UserId = Settings.UserId;
             // Starting a service like this is blocking, so we want to do it on a background thread
             new Task(() =>
             {
@@ -67,24 +65,12 @@ namespace Movia.Mobile.Droid.Services
             Log.Debug("App", "StopLocationService");
             try
             {
-                // Unbind from the LocationService; otherwise, StopSelf (below) will not work:
-                if (locationServiceConnection != null)
-                {
-                    Log.Debug("App", "Unbinding from LocationService");
-
-                    Android.App.Application.Context.UnbindService(locationServiceConnection);
-                }
-
-                // Stop the LocationService:
-                if (LocationService != null)
-                {
-                    Log.Debug("App", "Stopping the LocationService");
-                    LocationService.StopSelf();
-                }
+                Android.App.Application.Context.StopService(new Intent(Android.App.Application.Context, typeof(LocationService)));
             }
             catch (Exception e)
             {
-
+                Log.Debug("App", "err when stop LocationService");
+                Log.Debug("App", e.Message);
             }
         }
 

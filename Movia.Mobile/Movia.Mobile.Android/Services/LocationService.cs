@@ -1,14 +1,16 @@
 using System;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Locations;
 using Android.OS;
+using Android.Preferences;
 using Android.Util;
 using Firebase.Xamarin.Database;
 using Firebase.Xamarin.Database.Query;
+using Movia.Mobile.Helpers;
 using Movia.Mobile.Models;
 using Rangstrup.Xam.Plugin.Maps;
-using Xamarin.Forms.Maps;
 
 namespace Movia.Mobile.Droid.Services
 {
@@ -19,13 +21,20 @@ namespace Movia.Mobile.Droid.Services
         public event EventHandler<ProviderDisabledEventArgs> ProviderDisabled = delegate { };
         public event EventHandler<ProviderEnabledEventArgs> ProviderEnabled = delegate { };
         public event EventHandler<StatusChangedEventArgs> StatusChanged = delegate { };
-        public static string UserId { get; set; }
-        public LocationService()
+
+        public string UserId
         {
+            get
+            {
+                using (var sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(ApplicationContext))
+                {
+                    return sharedPreferences.GetString(Settings.UserIdKey, Convert.ToString(string.Empty));
+                }
+            }
         }
 
         // Set our location manager as the system location service
-        protected LocationManager LocMgr = Android.App.Application.Context.GetSystemService("location") as LocationManager;
+        protected readonly LocationManager LocMgr = Application.Context.GetSystemService("location") as LocationManager;
 
         readonly string logTag = "LocationService";
         IBinder binder;
@@ -41,7 +50,7 @@ namespace Movia.Mobile.Droid.Services
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
             Log.Debug(logTag, "LocationService started");
-
+            StartLocationUpdates();
             return StartCommandResult.Sticky;
         }
 
@@ -51,7 +60,6 @@ namespace Movia.Mobile.Droid.Services
         public override IBinder OnBind(Intent intent)
         {
             Log.Debug(logTag, "Client now bound to service");
-
             binder = new LocationServiceBinder(this);
             return binder;
         }
@@ -62,16 +70,15 @@ namespace Movia.Mobile.Droid.Services
             //we can set different location criteria based on requirements for our app -
             //for example, we might want to preserve power, or get extreme accuracy
             var locationCriteria = new Criteria();
-
             locationCriteria.Accuracy = Accuracy.NoRequirement;
             locationCriteria.PowerRequirement = Power.NoRequirement;
 
             // get provider: GPS, Network, etc.
             var locationProvider = LocMgr.GetBestProvider(locationCriteria, true);
-            Log.Debug(logTag, string.Format("You are about to get location updates via {0}", locationProvider));
+            Log.Debug(logTag, $"You are about to get location updates via {locationProvider}");
 
             // Get an initial fix on location
-            LocMgr.RequestLocationUpdates(locationProvider, 2000, 0, this);
+            LocMgr.RequestLocationUpdates(locationProvider, 2000, 20, this);
 
             Log.Debug(logTag, "Now sending location updates");
         }
@@ -91,30 +98,13 @@ namespace Movia.Mobile.Droid.Services
 
         public void OnLocationChanged(Android.Locations.Location location)
         {
-            this.LocationChanged(this, new LocationChangedEventArgs(location));
-
-            // This should be updating every time we request new location updates
-            // both when teh app is in the background, and in the foreground
-            //Log.Debug(logTag, String.Format("Latitude is {0}", location.Latitude));
-            //Log.Debug(logTag, String.Format("Longitude is {0}", location.Longitude));
-            //Log.Debug(logTag, String.Format("Altitude is {0}", location.Altitude));
-            //Log.Debug(logTag, String.Format("Speed is {0}", location.Speed));
-            //Log.Debug(logTag, String.Format("Accuracy is {0}", location.Accuracy));
-            //Log.Debug(logTag, String.Format("Bearing is {0}", location.Bearing));
-
-            try
-            {
-                UpdateUserLocation(new UserPositionModel(location.Latitude, location.Longitude, DateTime.UtcNow));
-            }
-            catch (Exception e)
-            {
-                Log.Debug(logTag, "Save position error");
-                Log.Debug(logTag, e.Message);
-            }
+            LocationChanged(this, new LocationChangedEventArgs(location));
+            Log.Debug(logTag, "Location changed");
+            UpdateUserLocation(new UserPositionModel(location.Latitude, location.Longitude, DateTime.UtcNow));
         }
         UserPositionModel _previousPos;
-        FirebaseClient _client = new FirebaseClient("https://movia-99235.firebaseio.com/");
-        private void UpdateUserLocation(UserPositionModel position)
+        private FirebaseClient _client = new FirebaseClient("https://movia-99235.firebaseio.com/");
+        private async Task UpdateUserLocation(UserPositionModel position)
         {
             if (_previousPos != null &&
                 MapHelpers.GetDistance(_previousPos.Latitude, _previousPos.Longitude, position.Latitude, position.Longitude) * 1000 < 10)
@@ -122,11 +112,23 @@ namespace Movia.Mobile.Droid.Services
                 return;
             }
             _previousPos = position;
-            _client.Child("Users")
-                .Child(UserId)
-                .Child("Position")
-                .PatchAsync(position).ConfigureAwait(false);
-            Log.Debug(logTag, "Save position successfully");
+            try
+            {
+                Log.Debug(logTag, UserId);
+                Log.Debug(logTag, "Position", position);
+                await _client.Child("Users")
+                    .Child(UserId)
+                    .Child("Position")
+                    .PatchAsync(position);
+                Log.Debug(logTag, "Save position successfully");
+            }
+            catch (Exception e)
+            {
+                Log.Debug(logTag, "Save position error");
+                Log.Debug(logTag, e.Message);
+                Log.Debug(logTag, e.StackTrace);
+                Log.Debug(logTag, e.Message, e);
+            }
         }
 
         public void OnProviderDisabled(string provider)
