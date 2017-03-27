@@ -57,5 +57,7 @@ namespace Movia.Mobile.Helpers
                 AppSettings.AddOrUpdateValue(IsSendLocationKey, value);
             }
         }
+
+        public const double OnlineThreshold = 3;
     }
 }

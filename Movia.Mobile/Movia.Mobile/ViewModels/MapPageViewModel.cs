@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Firebase.Xamarin.Database;
 using Firebase.Xamarin.Database.Query;
 using Firebase.Xamarin.Database.Streaming;
 using Movia.Mobile.Helpers;
 using Movia.Mobile.Models;
+using Movia.Mobile.Services;
 using PropertyChanged;
 using Rangstrup.Xam.Plugin.Maps;
 using Rangstrup.Xam.Plugin.Maps.Events;
 using Rangstrup.Xam.Plugin.Maps.Models;
 using Rangstrup.Xam.Plugin.Mvvm.ViewModels;
 using Xamarin.Forms;
-using Xamarin.Forms.Maps;
 
 namespace Movia.Mobile.ViewModels
 {
@@ -25,6 +26,7 @@ namespace Movia.Mobile.ViewModels
         public MapOptionsModel Options { get; set; }
         public bool IsFixedCenter { get; set; }
         public PositionModel MyPosition { get; set; }
+        CancellationTokenSource _reloadTokenSource;
 
         public MapPageViewModel(FirebaseClient client)
         {
@@ -35,12 +37,69 @@ namespace Movia.Mobile.ViewModels
         public override void Init()
         {
             base.Init();
+            _reloadTokenSource = new CancellationTokenSource();
             IsFixedCenter = true;
             GetCurrentUserInfo().ConfigureAwait(false);
-            GetUsers().ConfigureAwait(false);
+            GetUsers().ContinueWith((r) =>
+            {
+                // start reload task
+                StartReloadTask(_reloadTokenSource.Token).ConfigureAwait(false);
+            }).ConfigureAwait(false);
             EventSubcribers();
         }
 
+        public override void OnRelease()
+        {
+            CancelToken();
+            base.OnRelease();
+        }
+
+        private void CancelToken()
+        {
+            try
+            {
+                _reloadTokenSource.Cancel();
+                _reloadTokenSource.Dispose();
+            }
+            catch (Exception exception)
+            {
+            }
+        }
+
+        private async Task StartReloadTask(CancellationToken token)
+        {
+            try
+            {
+                await Task.Delay(TimeSpan.FromMinutes(1), token);
+                if (token.IsCancellationRequested)
+                    return;
+                await GetUserAndContinueReloadTask(token);
+            }
+            catch (Exception e)
+            {
+            }
+        }
+
+        private async Task GetUserAndContinueReloadTask(CancellationToken token)
+        {
+            await GetUsers();
+            // start reload task
+            StartReloadTask(token);
+        }
+
+        public void SendLocationToServerChanged(bool isSend)
+        {
+            Settings.IsSendLocation = isSend;
+            if (isSend)
+            {
+                if (MyPosition != null)
+                    NotifyMyLocationChanged(new UserPositionModel(MyPosition.Lat, MyPosition.Lng, DateTime.UtcNow)).ConfigureAwait(false);
+                return;
+            }
+            DependencyService.Get<IFormsLocationService>().StopLocationService();
+            // hide user position
+            NotifyMyLocationChanged(new UserPositionModel(MyPosition.Lat, MyPosition.Lng, default(DateTime))).ConfigureAwait(false);
+        }
         private async Task GetUsers()
         {
             try
@@ -50,6 +109,8 @@ namespace Movia.Mobile.ViewModels
                 foreach (var user in users)
                 {
                     if (user.Key == Settings.UserId)
+                        continue;
+                    if (DateTime.UtcNow.Subtract(user.Object.Position.UpdatedAt).TotalMinutes > Settings.OnlineThreshold)
                         continue;
                     UiUpdateUserPosition(user.Object);
                 }
@@ -138,13 +199,20 @@ namespace Movia.Mobile.ViewModels
 
         private void UiUpdateUserPosition(UserModel user)
         {
+            if (user?.Position == null)
+                return;
+            bool isShowOnMap = DateTime.UtcNow.Subtract(user.Position.UpdatedAt).TotalMinutes <= Settings.OnlineThreshold;
             var item = ListItems.FirstOrDefault(e => e.Index == user.Id);
             if (item == null)
             {
-                ListItems.Add(new PositionModel(user.Id, user.Position.Latitude, user.Position.Longitude, user.Name, user.Icon));
+                if (isShowOnMap)
+                    ListItems.Add(new PositionModel(user.Id, user.Position.Latitude, user.Position.Longitude, user.Name, user.Icon));
                 return;
             }
-            item.UpdatePosition(user.Position.Latitude, user.Position.Longitude);
+            if (isShowOnMap)
+                item.UpdatePosition(user.Position.Latitude, user.Position.Longitude);
+            else
+                ListItems.Remove(item);
         }
     }
 }

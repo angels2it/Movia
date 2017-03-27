@@ -1,22 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using Acr.UserDialogs;
+﻿using Acr.UserDialogs;
 using Autofac;
 using Firebase.Xamarin.Database;
-using Firebase.Xamarin.Database.Query;
 using Rangstrup.Xam.Plugin.Mvvm.Views;
 using Xamarin.Forms;
 using Movia.Mobile.Helpers;
-using Movia.Mobile.Models;
 using Movia.Mobile.Services;
 using Movia.Mobile.ViewModels;
 using Movia.Mobile.Views;
-using Rangstrup.Xam.Plugin.Maps;
 using Rangstrup.Xam.Plugin.Mvvm.Autofac;
-using Xamarin.Forms.Maps;
 
 namespace Movia.Mobile
 {
@@ -30,6 +21,7 @@ namespace Movia.Mobile
         public new static App Current => (App)Application.Current;
 
         public bool IsAuth => Settings.IsAuth;
+
         private FirebaseClient _client;
         public override void ConfigApplication(IContainer container)
         {

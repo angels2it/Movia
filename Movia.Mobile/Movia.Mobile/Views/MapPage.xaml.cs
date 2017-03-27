@@ -1,5 +1,6 @@
 ﻿using Movia.Mobile.Helpers;
 using Movia.Mobile.Services;
+using Movia.Mobile.ViewModels;
 using Rangstrup.Xam.Plugin.Mvvm.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -21,9 +22,8 @@ namespace Movia.Mobile.Views
 
         private void Switch_OnToggled(object sender, ToggledEventArgs e)
         {
-            Settings.IsSendLocation = e.Value;
-            if(!e.Value)
-                DependencyService.Get<IFormsLocationService>().StopLocationService();
+            var model = Model as MapPageViewModel;
+            model?.SendLocationToServerChanged(e.Value);
         }
     }
 }
