@@ -27,6 +27,7 @@ namespace Movia.Mobile.ViewModels
         public bool IsFixedCenter { get; set; }
         public PositionModel MyPosition { get; set; }
         CancellationTokenSource _reloadTokenSource;
+        private IDisposable _usersSubcribing;
 
         public MapPageViewModel(FirebaseClient client)
         {
@@ -37,10 +38,18 @@ namespace Movia.Mobile.ViewModels
         public override void Init()
         {
             base.Init();
-            _reloadTokenSource = new CancellationTokenSource();
+            try
+            {
+                _reloadTokenSource = new CancellationTokenSource();
+                _usersSubcribing?.Dispose();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
             IsFixedCenter = true;
             GetCurrentUserInfo().ConfigureAwait(false);
-            GetUsers().ContinueWith((r) =>
+            GetUsers().ContinueWith(r =>
             {
                 // start reload task
                 StartReloadTask(_reloadTokenSource.Token).ConfigureAwait(false);
@@ -61,8 +70,9 @@ namespace Movia.Mobile.ViewModels
                 _reloadTokenSource.Cancel();
                 _reloadTokenSource.Dispose();
             }
-            catch (Exception exception)
+            catch (Exception)
             {
+                // ignored
             }
         }
 
@@ -75,8 +85,9 @@ namespace Movia.Mobile.ViewModels
                     return;
                 await GetUserAndContinueReloadTask(token);
             }
-            catch (Exception e)
+            catch (Exception)
             {
+                // ignored
             }
         }
 
@@ -84,7 +95,7 @@ namespace Movia.Mobile.ViewModels
         {
             await GetUsers();
             // start reload task
-            StartReloadTask(token);
+            StartReloadTask(token).ConfigureAwait(false);
         }
 
         public void SendLocationToServerChanged(bool isSend)
@@ -115,8 +126,9 @@ namespace Movia.Mobile.ViewModels
                     UiUpdateUserPosition(user.Object);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
+                // ignored
             }
             FirebaseSubcribers();
         }
@@ -128,9 +140,9 @@ namespace Movia.Mobile.ViewModels
                 var user = await _client.Child("Users")
                 .Child(Settings.UserId)
                 .OnceSingleAsync<UserModel>();
-                Options = new MapOptionsModel()
+                Options = new MapOptionsModel
                 {
-                    MyPositionOptions = new PositionOptionsModel()
+                    MyPositionOptions = new PositionOptionsModel
                     {
                         Icon = user.Icon,
                         Text = "My location"
@@ -139,15 +151,16 @@ namespace Movia.Mobile.ViewModels
                 if (MyPosition != null)
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        Camera = new CameraModel()
+                        Camera = new CameraModel
                         {
                             Zoom = 16,
                             Target = MyPosition.Position
                         };
                     });
             }
-            catch (Exception e)
+            catch (Exception)
             {
+                // ignored
             }
         }
 
@@ -155,17 +168,19 @@ namespace Movia.Mobile.ViewModels
         {
             MessagingCenter.Subscribe<CurrentPositionChangedEvent>(this, "CurrentPositionChangedEvent", OnCurrentPositionChanged);
         }
-
+        private DateTime _lastTimeSyncPosition = default(DateTime);
         private void OnCurrentPositionChanged(CurrentPositionChangedEvent obj)
         {
             if (obj.Position == null || !Settings.IsSendLocation)
                 return;
             if (_lastUpdatedPos != null &&
-                MapHelpers.GetDistance(_lastUpdatedPos.Lat, _lastUpdatedPos.Lng, obj.Position.Lat, obj.Position.Lng) * 1000 < 10)
+                MapHelpers.GetDistance(_lastUpdatedPos.Lat, _lastUpdatedPos.Lng, obj.Position.Lat, obj.Position.Lng) * 1000 < 10
+                && _lastTimeSyncPosition != default(DateTime) && DateTime.Now.Subtract(_lastTimeSyncPosition).TotalMinutes < Settings.UpdatePositionInverval)
             {
                 return;
             }
             _lastUpdatedPos = obj.Position;
+            _lastTimeSyncPosition = DateTime.Now;
             NotifyMyLocationChanged(new UserPositionModel(obj.Position.Lat, obj.Position.Lng, DateTime.UtcNow)).ConfigureAwait(false);
         }
 
@@ -179,7 +194,7 @@ namespace Movia.Mobile.ViewModels
 
         private void FirebaseSubcribers()
         {
-            _client.Child("Users")
+            _usersSubcribing = _client.Child("Users")
                 .AsObservable<UserModel>()
                 .Subscribe(OnUsersChanged);
         }
@@ -192,8 +207,9 @@ namespace Movia.Mobile.ViewModels
                     return;
                 Device.BeginInvokeOnMainThread(() => UiUpdateUserPosition(@event.Object));
             }
-            catch (Exception e)
+            catch (Exception)
             {
+                // ignored
             }
         }
 

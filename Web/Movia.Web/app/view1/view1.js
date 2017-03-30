@@ -14,28 +14,38 @@ angular.module('myApp.view1', ['ngRoute'])
         // See https://firebase.google.com/docs/web/setup#project_setup for how to
         // auto-generate this config
         var config = {
-            databaseURL: "https://movia-99235.firebaseio.com/"
+            databaseURL: "https://oh-my-beer.firebaseio.com/"
         };
-
+        var usersPath = "movia/Users";
         firebase.initializeApp(config);
 
         NgMap.getMap().then(function (map) {
         });
 
-
-        var ref = firebase.database().ref().child("Users");
+        var dataRef = firebase.database().ref();
+        var ref = null;
         // create a synchronized array
         // click on `index.html` above to see it used in the DOM!
         $scope.users = [];
-        $interval(function () {
-            console.log('reload users list');
-            $timeout(function() {
-                ref = firebase.database().ref().child("Users");
+
+        function subcriber() {
+            ref = dataRef.child(usersPath);
+            ref.on("child_added", function (child) {
+                processChild(child.val());
             });
-        }, 1 * 60 * 1000);
-        ref.on("child_added", function (child) {
-            processChild(child.val());
-        });
+            ref.on("child_changed", function (childSnapshot) {
+                processChild(childSnapshot.val());
+            });
+        }
+
+        subcriber();
+        $interval(function () {
+            $timeout(function () {
+                ref = null;
+                console.log('reload users');
+                subcriber();
+            });
+        }, 3 * 60 * 1000);
 
         function processChild(user) {
             if (user.Position == null)
@@ -47,24 +57,21 @@ angular.module('myApp.view1', ['ngRoute'])
                 });
             if (localUser == null) {
                 if (isShowOnMap)
-                    $timeout(function() {
+                    $timeout(function () {
                         $scope.users.push(user);
                     });
                 return;
             }
             if (isShowOnMap)
-                $timeout(function() {
+                $timeout(function () {
                     localUser.Position = user.Position;
                 });
             else
-                $timeout(function() {
+                $timeout(function () {
                     _.remove($scope.users,
-                        function(u) {
+                        function (u) {
                             return u.Id === user.Id;
                         });
                 });
         }
-        ref.on("child_changed", function (childSnapshot) {
-            processChild(childSnapshot.val());
-        });
     }]);

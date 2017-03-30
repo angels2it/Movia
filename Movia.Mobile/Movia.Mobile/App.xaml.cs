@@ -7,6 +7,7 @@ using Movia.Mobile.Helpers;
 using Movia.Mobile.Services;
 using Movia.Mobile.ViewModels;
 using Movia.Mobile.Views;
+using Plugin.VersionTracking;
 using Rangstrup.Xam.Plugin.Mvvm.Autofac;
 
 namespace Movia.Mobile
@@ -20,7 +21,14 @@ namespace Movia.Mobile
         }
         public new static App Current => (App)Application.Current;
 
-        public bool IsAuth => Settings.IsAuth;
+        public bool IsAuth
+        {
+            get
+            {
+                if (CrossVersionTracking.Current.IsFirstLaunchForBuild) return false;
+                return Settings.IsAuth;
+            }
+        }
 
         private FirebaseClient _client;
         public override void ConfigApplication(IContainer container)
@@ -66,8 +74,6 @@ namespace Movia.Mobile
         public void OnAuthFlow(IViewFactory viewFactory)
         {
             MainPage = viewFactory.Resolve<MapPageViewModel>();
-            //if (Settings.IsSendLocation)
-            //    DependencyService.Get<IFormsLocationService>().StartLocationService();
         }
     }
 }

@@ -2,6 +2,8 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using Plugin.VersionTracking;
+using Rangstrup.Xam.Plugin.Mvvm;
 
 namespace Movia.Mobile.Droid
 {
@@ -14,11 +16,11 @@ namespace Movia.Mobile.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
-
+            CrossVersionTracking.Current.Track();
             Xamarin.Forms.Forms.Init(this, bundle);
             Xamarin.FormsMaps.Init(this, bundle);
             UserDialogs.Init(this);
-            LoadApplication(new App());
+            LoadApplication(new Movia.Mobile.App());
         }
     }
 }

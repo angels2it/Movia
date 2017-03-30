@@ -33,7 +33,7 @@ namespace Movia.Mobile.Helpers
             }
         }
 
-        public const string FirebaseUrl = "https://movia-99235.firebaseio.com/";
+        public const string FirebaseUrl = "https://oh-my-beer.firebaseio.com/movia";
         public static string UserId
         {
             get
@@ -57,6 +57,8 @@ namespace Movia.Mobile.Helpers
                 AppSettings.AddOrUpdateValue(IsSendLocationKey, value);
             }
         }
+
+        public static double UpdatePositionInverval = 3;
 
         public const double OnlineThreshold = 3;
     }

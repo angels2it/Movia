@@ -103,15 +103,18 @@ namespace Movia.Mobile.Droid.Services
             UpdateUserLocation(new UserPositionModel(location.Latitude, location.Longitude, DateTime.UtcNow));
         }
         UserPositionModel _previousPos;
-        private FirebaseClient _client = new FirebaseClient("https://movia-99235.firebaseio.com/");
+        private DateTime _lastTimeSyncPosition = default(DateTime);
+        private FirebaseClient _client = new FirebaseClient("https://oh-my-beer.firebaseio.com/movia");
         private async Task UpdateUserLocation(UserPositionModel position)
         {
             if (_previousPos != null &&
-                MapHelpers.GetDistance(_previousPos.Latitude, _previousPos.Longitude, position.Latitude, position.Longitude) * 1000 < 10)
+                MapHelpers.GetDistance(_previousPos.Latitude, _previousPos.Longitude, position.Latitude, position.Longitude) * 1000 < 10
+                && _lastTimeSyncPosition != default(DateTime) && DateTime.Now.Subtract(_lastTimeSyncPosition).TotalMinutes < Settings.UpdatePositionInverval)
             {
                 return;
             }
             _previousPos = position;
+            _lastTimeSyncPosition  = DateTime.Now;
             try
             {
                 Log.Debug(logTag, UserId);
